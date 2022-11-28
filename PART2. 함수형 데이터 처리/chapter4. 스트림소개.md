@@ -23,7 +23,7 @@ List<String> treeHighCaloricDishesName =
     .limit(3) // 선착순 세 개만 선택 (크기 축소)
     .collect(toList()); // 결과를 다른 리스트로 저장 (스트림을 다른 형식으로 변환)
 ~~~
-* 연속된 요소: 특정 요소 형식으로 이루어진 연속도니 값 집합의 인터페이스 제공
+* 연속된 요소: 특정 요소 형식으로 이루어진 연속된 값 집합의 인터페이스 제공
 * 소스(데이터 소스): 데이터 제공 소스(컬렉션, 배열, I/O자원)로부터 데이터를 소비  
   정렬된 컬렉션으로 스트림을 생성하면 정렬이 그대로 유지  
   => 요리 리스트
@@ -33,7 +33,7 @@ List<String> treeHighCaloricDishesName =
 ![4-2 스트림에서 메뉴 필터링해서 세개의 고칼로리 요리명 찾기](../images/4-2.png)
 
 
-### 스트림의 특징
+## 스트림의 특징
 #### 1. **선언형**으로 코드를 구현할 수 있다  
 `loop`, `if` 등의 제어블록없이 동작의 수행을 지정할 수 있음 => 요구 사항에 쉽게 대응
 #### 2. **복잡한 데이터 처리 파이프 라인**을 만들 수 있다  
@@ -42,7 +42,7 @@ List<String> treeHighCaloricDishesName =
 * **가독성 + 명확성**이 유지된다
 * 데이터처리를 **병렬화**하면서 스**레드 + 락을 걱정하지 않아도 된다**
 * 게으름(laziness), 쇼트서킷(short-circuiting)같은 최적화를 얻을수 있다
-### 3. 딱 한번만 탐색할 수 있다
+#### 3. 딱 한번만 탐색할 수 있다
 탐색된 스트림의 요소는 소비된다
 ~~~java
 List<String> names = Arrays.asList("Java8", "Lambdas", "In", "Action");
@@ -50,7 +50,7 @@ Stream<String> s = names.stream();
 s.forEach(System.out::println); // 타이틀의 각 단어를 출력
 s.forEach(System.out::println); // 스트림이 이미 소비되었거나 닫힘, IllegalStateException 발생!
 ~~~
-### 4. 내부 반복
+#### 4. 내부 반복
 * 외부반복
   * for-each 등 사용자가 직접 요소를 반복해야함
 * 내부반복
@@ -60,7 +60,7 @@ s.forEach(System.out::println); // 스트림이 이미 소비되었거나 닫힘
 ~~~java
 // 반복자 없이 파이프라인을 실행한다 => 내부반복
 List<String> names = menu.stream()
-        .map(Dish::getName())
+        .map(Dish::getName)
         .collect(toList()); 
 ~~~
 <br>
