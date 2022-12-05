@@ -16,6 +16,15 @@
 
 우리는 컬렉터의 장점을 활용해 앞으로 toList처럼 Collector 인터페이스의 구현체를 넘겨서 결과를 수집하는 과정을 간단하면서도 유연한 방식으로 정의할 수 있다.
 
+🤦‍♀️ Collector와 Collectors... 뭐가 다른 거지?
+
+책에서 자꾸 둘을 혼용해서 쓰길래 헷갈려서 추가한다.
++ Collector : Collector 인터페이스
+https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html
+
++ Collectors : Collector 인터페이스를 구현한 클래스
+https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html
+
 <br>
 
 ### 팩토리 메서드 🛠
