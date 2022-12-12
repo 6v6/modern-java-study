@@ -109,7 +109,7 @@ parallel을 호출한다고 해도 스트림 자체에는 변화가 없다. 대�
 
 아니... 언박싱 오버헤드가 그렇게 크다고? 싶지만 그렇다.
 
-그래서 어떤 알고리즘을 병렬화하는 거에 중점을 두는 것보다 적절한 자료구조를 선택하는 것이 더 중요하기도 하다.
+그래서 어떤 알고리즘을 병렬화하는 에 중점을 두는 것보다 적절한 자료구조를 선택하는 것이 더 중요하기도 하다.
 
 <br>
 
@@ -141,7 +141,7 @@ public static long parallelRangedSum(long n) {
 
 📌 참고
 
-[race condition이란...?]([BE_TIL/10. Process Synchronization 1.md at master · hjyeon-n/BE_TIL · GitHub](https://github.com/hjyeon-n/BE_TIL/blob/master/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_KOCW/10.%20Process%20Synchronization%201.md))
+[race condition이란...?](https://github.com/hjyeon-n/BE_TIL/blob/master/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_KOCW/10.%20Process%20Synchronization%201.md)
 
 <br>
 
