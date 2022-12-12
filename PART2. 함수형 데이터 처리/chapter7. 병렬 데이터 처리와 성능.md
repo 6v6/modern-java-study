@@ -20,7 +20,7 @@
   public static long sequentialSum(long n) {
     return Stream.iterate(1L, i -> i + 1) // 무한 자연수 스트림 생성
                  .limit(n) // n개 이하로 제한
-                 .reduce(0L, Long::sum); // 모든 숫자를 더하는 스트림 리듀싱 연
+                 .reduce(0L, Long::sum); // 모든 숫자를 더하는 스트림 리듀싱 연산
   }
 ```
 
