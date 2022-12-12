@@ -209,3 +209,9 @@ Optional<Integer> maxValue = Optional.ofNullable(map.reduceValues(parallelismThr
 * `keySet`: ConcurrentHashMap을 집합 뷰로 반환함
 맵을 바꾸면 집합도 바뀌고 반대로 집합을 바꾸면 맵도 영향을 받는다.  
 * `newKeySet`: ConcurrentHashMap으로 유지되는 집합을 만들 수 있음
+
+**keySet output ex)**
+~~~
+Initial Mappings are: {20=Geeks, 25=Welcomes, 10=Geeks, 30=You, 15=4}
+The set is: [20, 25, 10, 30, 15]
+~~~
