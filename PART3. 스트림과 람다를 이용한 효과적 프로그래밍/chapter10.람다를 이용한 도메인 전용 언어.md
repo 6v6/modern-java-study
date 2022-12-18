@@ -65,15 +65,15 @@ dsl에서 가장 흔한 방식 중 하나
 
 ```java
 Order order = forCustomer("BigBank")
-				.buy(80)
-				.stock("IBM")
-				.on("NYSE")
-				.at(125.00)
-				.sell(50)
-				.stock("GOOGLE")
-				.on("NASDAQ")
-				.at(375.00)
-				.end();
+        .buy(80)
+        .stock("IBM")
+        .on("NYSE")
+        .at(125.00)
+        .sell(50)
+        .stock("GOOGLE")
+        .on("NASDAQ")
+        .at(375.00)
+        .end();
 ```
 
 ```java
@@ -122,11 +122,11 @@ public class MethodChainingOrderBuilder {
 
 ```java
 Order order = order("BigBank",
-									buy(80,
-										stock("IBM", on("NYSE")), at(125.00)),
-									sell(50,
-										stock("GOOGLE", on("NASDAQ")), at(375.00))
-								);
+              buy(80,
+                  stock("IBM", on("NYSE")), at(125.00)),
+              sell(50,
+                  stock("GOOGLE", on("NASDAQ")), at(375.00))
+             );
 ```
 
 ```java
@@ -186,22 +186,22 @@ public class NestedFunctionOrderBuilder {
 
 ```java
 Order order = order(o -> {
-		o.forCustomer("BigBank");
-		o.buy(t -> {
-				t.quantity(80);
-				t.price(125.00);
-				t.stock(s -> {
-						s.symbol("IBM");
-						s.market("NYSE");
-				});
-		o.sell(t -> {
-				t.quantity(50);
-				t.price(375.00);
-				t.stock(s -> {
-						s.symbol("GOOGLE");
-						s.market("NASDAQ");
-				});
-		});
+    o.forCustomer("BigBank");
+    o.buy(t -> {
+        t.quantity(80);
+        t.price(125.00);
+        t.stock(s -> {
+            s.symbol("IBM");
+            s.market("NYSE");
+        });
+    o.sell(t -> {
+        t.quantity(50);
+        t.price(375.00);
+        t.stock(s -> {
+            s.symbol("GOOGLE");
+            s.market("NASDAQ");
+        });
+    });
 });
 ```
 
