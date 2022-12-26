@@ -185,12 +185,13 @@ DateTimeFormatter italianFormatter = new DateTimeFormatterBuilder()
 `ZoneId zoneId = TimeZone.getDefault().toZoneId();`  
 
 ### UTC/Greenwich 기준의 고정 오프셋
-* UTC / GMT 를 기준으로 시간대를 표현하기도 한다.
+* UTC / GMT 를 기준으로 시간대를 표현하기도 한다.  
 `ZoneOffset.of("-5:00"); // 현재 타임존 보다 5시간 느린 곳 정의`
 * 위 예제에서 정의한 ZoneOffset으로는 서머타임을 정확히 처리할 수 없으므로 권장하지 않는다. 
 * ZoneOffset은 ZoneId이므로 ZoneOffset을 사용할 수 있다. 
 * ISO-8601 캘린더 시스템에서 정의하는 UTC/GMT와 오프셋으로 날짜와 시간을 표현하는 OffsetDateTime을 만들수 있다.
 
+## 
 ---
 * Java 8 이전에서 제공하는 기존 Date 클래스와 관련 클래스는 결함이 존재했다.
 * 새로운 날짜와 시간 API에서 날짜와 시간 객체는 모두 불변클래스이다.
