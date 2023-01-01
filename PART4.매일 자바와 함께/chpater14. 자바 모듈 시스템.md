@@ -78,7 +78,7 @@
 
 📌 참고!
 
-[JAR이 뭐였더라...?]([BE_TIL/AWS 배포 과정 중 알게된 것들.md at master · hjyeon-n/BE_TIL · GitHub](https://github.com/hjyeon-n/BE_TIL/blob/master/AWS/AWS%20%EB%B0%B0%ED%8F%AC%20%EA%B3%BC%EC%A0%95%20%EC%A4%91%20%EC%95%8C%EA%B2%8C%EB%90%9C%20%EA%B2%83%EB%93%A4.md))
+[JAR이 뭐였더라...?](https://github.com/hjyeon-n/BE_TIL/blob/master/AWS/AWS%20%EB%B0%B0%ED%8F%AC%20%EA%B3%BC%EC%A0%95%20%EC%A4%91%20%EC%95%8C%EA%B2%8C%EB%90%9C%20%EA%B2%83%EB%93%A4.md)
 
 <br>
 
@@ -97,7 +97,7 @@
 
 📌 참고!
 
-[maven, gradle 자세히 알려줘!]([BE_TIL/Spring의 이것저것.md at master · hjyeon-n/BE_TIL · GitHub](https://github.com/hjyeon-n/BE_TIL/blob/master/Spring%EC%9D%98%20%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/Spring%EC%9D%98%20%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83.md))
+[maven, gradle 자세히 알려줘!](https://github.com/hjyeon-n/BE_TIL/blob/master/Spring%EC%9D%98%20%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83/Spring%EC%9D%98%20%EC%9D%B4%EA%B2%83%EC%A0%80%EA%B2%83.md)
 
 <br>
 
