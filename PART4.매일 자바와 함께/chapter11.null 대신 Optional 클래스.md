@@ -79,7 +79,7 @@ Optional<String> name = optInsurance.map(Insurance::getName);
 
 스트림의 Map 메서드와 개념적으로 비슷
 
-![img](../images/img11-1.png)
+![img](../images/img11-2.png)
 
 ### flatMap으로 Optional 객체 연결
 
@@ -93,7 +93,7 @@ Optional<String> name = optPerson.map(Person::getCar)
 위 코드의 연산 결과는 Optional<Optional<Car>> 형식의 객체로 getInsurance가 지원되지 않아 컴파일 불가    
 → 함수를 인수로 받아 다른 스트림을 반환하는 **flatMap** 이용
 
-![img](../images/img11-2.png)
+![img](../images/img11-1.png)
 
 ```java
 public String getCarInsuranceName(Optional<Person> person) {
