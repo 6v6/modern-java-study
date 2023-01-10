@@ -10,12 +10,12 @@
 * 비동기 작업 완료에 대응하기
 ---
 
-## 16.1 Future의 단순 활용
+## Future의 단순 활용
 1. 시간이 걸릴 수 있는 작업을 Future 내부로 설정하면 호출자 스레드가 결과를 기다리는 동안 다른 작업을 할 수 있다.  
 2. Future작업은 ExecutorService에서 제공하는 스레드에서 처리되고, 작업의 결과가 필요한 시점에 Future의 get 메서드로 결과를 가져올 수 있다.  
 3. get 메서드를 호출했을 때 결과가 준비되어있지 않다면 작업이 완료될 때까지 스레드를 블록시킨다.
 
-### 16.1.1 Future 제한
+### Future 제한
 `Future`인터페이스에는 비동기 계산에 대한 대기와 결과 처리 메서드들이 있다. 
 하지만 여러 `Future` 간 의존성은 표현하기 어렵다.
 
@@ -26,8 +26,8 @@
 * 프로그램적으로 Future를 완료시킨다.(비동기 동작에서 수동으로 결과 제공)
 * Future 완료 동작에 반응한다.(결과를 기다리면서 블록되지 않음)
 
-## 16.2 비동기 API 구현
-**1초 지연을 흉내내는 메서드**
+## 비동기 API 구현
+**1초 지연을 흉내내는 메서드**  
 ~~~java
 public double getPrice(String product) {
     return calculatePrice(product);
@@ -41,7 +41,7 @@ private double calculatePrice(String product) {
 ~~~
 
 
-**동기 메서드를 비동기 메서드로 변환**
+**동기 메서드를 비동기 메서드로 변환**  
 ~~~java
 public Future<Double> getPriceAsync(String product) {
     // 비동기 계산과 완료 결과를 포함하는 CompletableFuture 인스턴스 생성
@@ -54,7 +54,7 @@ public Future<Double> getPriceAsync(String product) {
 }
 ~~~
 
-**getPriceAsync를 활용하여 비동기 API 사용**
+**getPriceAsync를 활용하여 비동기 API 사용**  
 ~~~java
 Shop shop = new Shop("BestShop");
 long start = System.nanoTime();
@@ -75,9 +75,9 @@ long retrievalTime = ((System.nanoTime() - start) / 1_000_000);
 가격 계산 API는 비동기로 처리되므로 즉시 Future를 반환하고, 그 사이에 다른 작업을 처리할 수 있다.  
 다른작업이 끝났다면 Future의 get 메서드를 호출해서 가격정보를 받을 때까지 대기한다.  
 
-**에러 처리 방법**
+**에러 처리 방법**  
 예외가 발생하면 해당 스레드에만 영향을 미치기 때문에 클라이언트는 `get` 메서드가 반환될 때까지 영원히 기다릴 수도 있다.  
-타임아웃을 활용해 예외처리를 하고, `completeExceptionally` 메서드를 이용해 `CompletableFuture` 내부에서 발생한 에외를 클라이언트로 전달해야 한다.
+타임아웃을 활용해 예외처리를 하고, `completeExceptionally` 메서드를 이용해 `CompletableFuture` 내부에서 발생한 외를 클라이언트로 전달해야 한다.
 ~~~java
 public Future<Double> getPriceAsync(String product) {
     CompletableFuture<Double> futurePrice = new CompletableFuture<>();
@@ -95,7 +95,7 @@ public Future<Double> getPriceAsync(String product) {
 }
 ~~~
 
-**팩토리 메서드 supplyAsync로 CompletableFuture 만들기**
+**팩토리 메서드 supplyAsync로 CompletableFuture 만들기**  
 ~~~java
 public Future<Double> getPriceAsync(String product) {
     return CompletableFuture.supplyAsync(() -> calculatePrice(product));
@@ -105,7 +105,7 @@ public Future<Double> getPriceAsync(String product) {
 * `ForkJoinPool`의 `Executor` 중 하나가 `Supplier`를 실행하며, 두 번째 인수로 다른 `Executor`를 지정할 수도 있다.
 
 ## 16.3 비블록 코드 만들기
-**상점 리스트**
+**상점 리스트**  
 ~~~java
 List<Shop> shops = Arrays.asList(new Shop("BestPrice"),
 new Shop("LetsSaveBig"),
@@ -113,7 +113,7 @@ new Shop("MyFavoriteShop"),
 new Shop("BuyItAll"));
 ~~~
 
-**제품명을 입력하면 상점 이름과 제품 가격 문자열을 반환하는 List**  
+**제품명을 입력하면 상점 이름과 제품 가격 문자열을 반환하는 List**   
 네 개의 상점에서 각각 가격을 검색하는 동안 블록되는 시간이 발생
 ~~~java
 public List<String> findPrices(String product) {
@@ -124,7 +124,7 @@ public List<String> findPrices(String product) {
 ~~~
 
 
-**병렬 스트림으로 요청 병렬화하기**  
+**병렬 스트림으로 요청 병렬화하기**    
 병렬로 검색되어 시간은 하나의 상점에서 가격을 검색하는 정도만 소요
 ~~~java
 public List<String> findPrices(String product) {
@@ -148,7 +148,7 @@ List<CompletableFuture<String>> 을 얻을 수 있다.
 리스트의 CompletableFuture는 각각 계산 결과가 끝난 상점의 이름 문자열을 포함한다.  
 List<String> 형식을 얻어야 하므로 모든 CompletableFuture의 동작이 완료되고 결과를 추출한 다음 리스트를 반환해야 한다.  
 
-**두개의 파이프라인으로 처리** (join사용)
+**두개의 파이프라인으로 처리** (join사용)  
 스트림 연산은 게으른 특성이 있으므로 하나의 파이프라인으로 처리했다면 모든 가격 정보 요청 동작이 동기적, 순차적으로 이루어지게 된다.
 ~~~Java
 public List<String> findPrices(String product) {
@@ -179,7 +179,7 @@ return priceFutures.stream()
 > - W/C : 대기시간과 계산시간의 비율
 
 한 상점에 하나의 스레드가 할당될 수 있도록, 상점 수만큼 `Executor`를 설정한다.  
-서버 크래시 방지를 위해 하나의 Executor에서 사용할 스레드의 최대 개수는 100 이하로 설정한다.
+서버 크래시 방지를 위해 하나의 Executor에서 사용할 스레드의 최대 개수는 100 이하로 설정한다.  
 
 ~~~ java
 private final Executor executor = Executors.newFixedThreadPool(Math.min(shops.size(), 100), //상점 수만큼의 스레드를 갖는 풀 생성(0~100 사이)
@@ -193,13 +193,13 @@ new ThreadFactory() {
 ~~~
 **데몬 스레드**를 사용하면 자바 프로그램이 종료될 때 강제로 스레드 실행이 종료될 수 있다.
 
-**스트림 병렬화와 CompletableFuture 병렬화**
+**스트림 병렬화와 CompletableFuture 병렬화**  
 * I/O가 포함되는 않은 계산 중심의 동작을 실행할 때는 스트림 인터페이스가 가장 구현하기 간단하며 효율적일 수 있다.
 * I/O를 기다리는 작업을 병렬로 실행할 때는 CompletableFuture가 더 많은 유연성을 제공하며, 대기/계산의 비율에 적합한 스레드 수를 설정할 수 있다. 
 * 스트림의 게으른 특성 때문에 스트림에서 I/O를 실제로 언제 처리할지 예측하기 어려운 문제도 있다.
 
-## 16.4 비동기 작업 파이프라인 만들기
-**enum으로 할인율을 제공하는 코드를 정의**
+## 비동기 작업 파이프라인 만들기
+**enum으로 할인율을 제공하는 코드를 정의**  
 ~~~java
 public class Discount {
     public enum Code {
@@ -216,7 +216,7 @@ public class Discount {
 ~~~
 
 
-**getPrice 메서드 수정** (ShopName:price:DiscountCode 형식의 문자열을 반환)
+**getPrice 메서드 수정** (ShopName:price:DiscountCode 형식의 문자열을 반환)  
 ~~~java
 public String getPrice(String product) {
     double price = calcuatePrice(product);
@@ -369,7 +369,7 @@ final Funtion<Double> futurePriceInUSD = executor.submit(new Callable<Double>() 
 ~~~
 
 ### 타임아웃 효과적으로 사용하기
-Future가 작업을 끝내지 못할 경우 **TimeoutException**을 발생시켜 문제를 해결할 수 있다.
+Future가 작업을 끝내지 못할 경우 **TimeoutException**을 발생시켜 문제를 해결할 수 있다.  
 ~~~java
 Funtion<Double> futurePriceInUSD = CompletableFuture.supplyAsync(() -> shop.getPrice(product))
         .thenCombine(CompletableFuture.suuplyAsync(
@@ -390,7 +390,7 @@ Funtion<Double> futurePriceInUSD = CompletableFuture.supplyAsync(() -> shop.getP
 각 상점에서 물건 가격 정보를 얻어오는 findPrices 메서드가 모두 1초씩 지연되는 대신, 0.5~2.5초씩 임의로 지연된다고 하자.  
 그리고 각 상점에서 가격 정보를 제공할때마다 즉시 보여줄 수 있는 최저가격 검색 어플리케이션을 만들어보자.  
 
-**최저가격 검색 에플리케이션 리팩터링**
+**최저가격 검색 에플리케이션 리팩터링**  
 ~~~java
 public Stream<CompletableFuture<String>> findPriceStream(String product) {
     return shop.stream()
@@ -407,7 +407,7 @@ findPriceStream 메서드 내부에서 세 가지 map 연산을 적용하고 반
 findPriceStream("myPhone").map(f -> f.thenAccept(System.out::println));
 ~~~
 
-**CompletableFuture 종료에 반응하기**
+**CompletableFuture 종료에 반응하기**  
 ~~~java
 CompletableFuture[] futures = findPriceStream("myPhone")
     .map(f -> f.thenAccept(System.out::println))
