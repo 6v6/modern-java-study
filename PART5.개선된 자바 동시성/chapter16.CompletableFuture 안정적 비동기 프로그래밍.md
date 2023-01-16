@@ -9,7 +9,9 @@
 * 두 개 이상의 비동기 연산을 파이프라인으로 만들고 합치기
 * 비동기 작업 완료에 대응하기
 ---
-
+    
+<br>
+ 
 ## Future의 단순 활용
 1. 시간이 걸릴 수 있는 작업을 Future 내부로 설정하면 호출자 스레드가 결과를 기다리는 동안 다른 작업을 할 수 있다.  
 2. Future작업은 ExecutorService에서 제공하는 스레드에서 처리되고, 작업의 결과가 필요한 시점에 Future의 get 메서드로 결과를 가져올 수 있다.  
@@ -26,6 +28,8 @@
 * 프로그램적으로 Future를 완료시킨다.(비동기 동작에서 수동으로 결과 제공)
 * Future 완료 동작에 반응한다.(결과를 기다리면서 블록되지 않음)
 
+<br>
+
 ## 비동기 API 구현
 **1초 지연을 흉내내는 메서드**  
 ~~~java
@@ -40,6 +44,7 @@ private double calculatePrice(String product) {
 }
 ~~~
 
+<br>
 
 **동기 메서드를 비동기 메서드로 변환**  
 ~~~java
@@ -53,6 +58,8 @@ public Future<Double> getPriceAsync(String product) {
     return futurePrice; // 계산 결과를 기다리지 않고 결과를 포함할 Future 인스턴트를 바로 반환
 }
 ~~~
+
+<br>
 
 **getPriceAsync를 활용하여 비동기 API 사용**  
 ~~~java
@@ -75,6 +82,8 @@ long retrievalTime = ((System.nanoTime() - start) / 1_000_000);
 가격 계산 API는 비동기로 처리되므로 즉시 Future를 반환하고, 그 사이에 다른 작업을 처리할 수 있다.  
 다른작업이 끝났다면 Future의 get 메서드를 호출해서 가격정보를 받을 때까지 대기한다.  
 
+<br>
+
 **에러 처리 방법**  
 예외가 발생하면 해당 스레드에만 영향을 미치기 때문에 클라이언트는 `get` 메서드가 반환될 때까지 영원히 기다릴 수도 있다.  
 타임아웃을 활용해 예외처리를 하고, `completeExceptionally` 메서드를 이용해 `CompletableFuture` 내부에서 발생한 외를 클라이언트로 전달해야 한다.
@@ -95,6 +104,8 @@ public Future<Double> getPriceAsync(String product) {
 }
 ~~~
 
+<br>
+
 **팩토리 메서드 supplyAsync로 CompletableFuture 만들기**  
 ~~~java
 public Future<Double> getPriceAsync(String product) {
@@ -103,6 +114,8 @@ public Future<Double> getPriceAsync(String product) {
 ~~~
 * `supplyAsync`메서드는 `Supplier`를 인수로 받아서 `CompletableFuture`를 반환한다.
 * `ForkJoinPool`의 `Executor` 중 하나가 `Supplier`를 실행하며, 두 번째 인수로 다른 `Executor`를 지정할 수도 있다.
+
+<br>
 
 ## 16.3 비블록 코드 만들기
 **상점 리스트**  
@@ -123,6 +136,7 @@ public List<String> findPrices(String product) {
 }
 ~~~
 
+<br>
 
 **병렬 스트림으로 요청 병렬화하기**    
 병렬로 검색되어 시간은 하나의 상점에서 가격을 검색하는 정도만 소요
@@ -134,6 +148,7 @@ public List<String> findPrices(String product) {
 }
 ~~~
 
+<br>
 
 **CompletableFutue로 비동기 호출 구현하기** (findPrices 메서드의 호출을 비동기로 변경하기)  
 ~~~JAVA
@@ -163,12 +178,16 @@ return priceFutures.stream()
     .collect(toList());
 }
 ~~~ 
-
+    
+<br>
+    
 **더 확장성이 좋은 해결방법**  
 병렬 스트림 버전에서는 4개의 스레드에 4개의 작업을 병렬로 수행하면서 검색 시간을 최소화했다.  
 하지만 작업이 5개가 된다면, 4개 중 하나의 스레드가 완료된 후에 추가로 5번째 질의을 수행할 수 있다.  
 `CompletableFuture`는 병렬 스트림에 비해 작업에 이용할 수 있는 **Executor**를 지정할 수 있다는 장점이 있다.  
 
+<br>
+    
 **커스텀 Executor 사용하기**  
 실제로 필요한 작업량을 고려한 풀에서 관리하는 스레드 수에 맞게 Executor를 만들 수 있다.  
 
@@ -193,10 +212,14 @@ new ThreadFactory() {
 ~~~
 **데몬 스레드**를 사용하면 자바 프로그램이 종료될 때 강제로 스레드 실행이 종료될 수 있다.
 
+<br>
+    
 **스트림 병렬화와 CompletableFuture 병렬화**  
 * I/O가 포함되는 않은 계산 중심의 동작을 실행할 때는 스트림 인터페이스가 가장 구현하기 간단하며 효율적일 수 있다.
 * I/O를 기다리는 작업을 병렬로 실행할 때는 CompletableFuture가 더 많은 유연성을 제공하며, 대기/계산의 비율에 적합한 스레드 수를 설정할 수 있다. 
 * 스트림의 게으른 특성 때문에 스트림에서 I/O를 실제로 언제 처리할지 예측하기 어려운 문제도 있다.
+
+<br>
 
 ## 비동기 작업 파이프라인 만들기
 **enum으로 할인율을 제공하는 코드를 정의**  
@@ -215,7 +238,8 @@ public class Discount {
 }
 ~~~
 
-
+<br>
+    
 **getPrice 메서드 수정** (ShopName:price:DiscountCode 형식의 문자열을 반환)  
 ~~~java
 public String getPrice(String product) {
@@ -225,6 +249,8 @@ public String getPrice(String product) {
 }
 ~~~
 
+<br>
+    
 ### 할인 서비스 구현
 **상점에서 제공한 문자열 파싱은 다음처럼 Quote 클래스로 캡슐화**  
 상점에서 얻은 문자열을 정적 팩토리 메서드 parse로 넘겨주면 상점 이름, 할인전 가격, 할인된 가격 정보를 포함하는 Quote 클래스 
@@ -263,7 +289,7 @@ public class Quote {
 }
 ~~~
 
-
+<br>
 
 다음으로 Discount 서비스에서는 Quote 객체를 인수로 받아 할인된 가격 문자열을 반환하는 applyDiscount 메서드도 제공한다.
 ~~~java
@@ -283,7 +309,9 @@ public class Discount {
     }
 }
 ~~~
-
+    
+<br>
+    
 ### 할인 서비스 이용
 **순차적&동기방식으로 findPrice 메서드 구현**  
 ~~~java
@@ -295,6 +323,7 @@ public List<String> findPrices(String product) {
         .collect(toList());
 }
 ~~~
+    
 순차적으로 다섯 상점에 가격을 요청하면서 5초가 소요되고, 할인코드를 적용하면서 5초가 소요된다.  
 병렬 스트림으로 변환하면 성능을 개선할 수 있다.  
 하지만 스트림이 사용하는 **스레드 풀의 크기가 고정**되어 있으므로, **상점 수가 늘어나게되면 유연하게 대응할 수 없다.**  
@@ -333,7 +362,9 @@ return priceFutures.stream()
 - 상점에서 가격 정보를 얻어 와서 Quote로 변환하기
 - 변환된 Quote를 Discount 서비스로 전달해서 할인된 최종가격 획득하기
 - **thenCompose** 메서드로 **두 비동기 연산을 파이프 라인으로 만들수 있다.**
-
+    
+<br>
+    
 ### 독립 CompletableFuture와 비독립 CompletableFuture 합치기 (thenCombine)
 * 독립적으로 실행된 두 개의 CompletableFuture 결과를 합쳐야할 때 **thenCombine** 메서드를 사용한다.
 * thenCombine 메서드의 BiFunction 인수는 결과를 어떻게 합질지 정의한다.
@@ -406,7 +437,9 @@ findPriceStream 메서드 내부에서 세 가지 map 연산을 적용하고 반
 ~~~java
 findPriceStream("myPhone").map(f -> f.thenAccept(System.out::println));
 ~~~
-
+    
+<br>
+    
 **CompletableFuture 종료에 반응하기**  
 ~~~java
 CompletableFuture[] futures = findPriceStream("myPhone")
