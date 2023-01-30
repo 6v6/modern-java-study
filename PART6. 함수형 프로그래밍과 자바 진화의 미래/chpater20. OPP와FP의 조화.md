@@ -107,7 +107,7 @@ val linesLongUpper = fileLines.par filter (_.length() > 10) map(_.toUpperCase())
 ~~~
 * 스트림의 `parallel`을 호출하여 파이프라인을 병렬로 실행한것처럼, `par`을 이용하면 된다.
 
-<br/ >
+<br/>
 
 ### 튜플
 * 자바는 튜플을 지원하지 않는다. 필요하면 VO를 만들어써야한다.
